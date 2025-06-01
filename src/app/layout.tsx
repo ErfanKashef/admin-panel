@@ -1,6 +1,11 @@
 import type { Metadata } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
+import { Geist, Geist_Mono, Roboto_Mono } from "next/font/google";
 import "./globals.css";
+
+import { AppSidebar } from "@/components/ui/app-sidebar";
+import { Breadcrumb } from "@/components/ui/breadcrumb";
+import { Separator } from "@/components/ui/separator";
+import { SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -9,6 +14,11 @@ const geistSans = Geist({
 
 const geistMono = Geist_Mono({
   variable: "--font-geist-mono",
+  subsets: ["latin"],
+});
+
+const Roboto = Roboto_Mono({
+  variable: "--font-roboto-mono",
   subsets: ["latin"],
 });
 
@@ -23,11 +33,32 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
+    <html lang="en" className={Roboto.className}>
       <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
+        className={`${geistSans.variable} ${geistMono.variable} antialiased dark `}
       >
-        {children}
+        {/* Sidebar */}
+        <SidebarProvider className="flex min-h-full">
+          {/* Sidebar */}
+          <AppSidebar />
+
+          {/* Main Content Area */}
+          <div className=" flex-col gap-4 flex-1">
+            {/* Header */}
+            <header className="flex h-16  items-center gap-2 border-b px-4 ">
+              <SidebarTrigger className="-ml-1" />
+              <Separator orientation="vertical" className="mr-2 h-4" />
+              <Breadcrumb>
+                <div className="p-1">
+                  <p>SpaceOMID</p>
+                </div>
+              </Breadcrumb>
+            </header>
+
+            {/* Page Content */}
+            <main className=" overflow-y-auto p-4">{children}</main>
+          </div>
+        </SidebarProvider>
       </body>
     </html>
   );
