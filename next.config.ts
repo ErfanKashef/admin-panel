@@ -5,7 +5,7 @@ import type { NextConfig } from "next";
 const nextConfig: NextConfig = {
   /* config options here */
   images: {
-    domains: ["spaceomid.com", "upload.wikimedia.org"],
+    domains: ["spaceomid.com", "upload.wikimedia.org", "reqres.in"],
   },
 };
 

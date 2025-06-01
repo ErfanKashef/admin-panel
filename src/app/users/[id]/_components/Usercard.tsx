@@ -34,8 +34,8 @@ const UserCard: React.FC<UserCardProps> = ({
       <div>
         <Image
           src={avatar}
-          width={400}
-          height={400}
+          width={150}
+          height={200}
           alt={`${first_name} ${last_name}`}
           className="rounded-lg w-full md:w-auto"
         />
