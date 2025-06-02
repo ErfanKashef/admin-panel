@@ -3,10 +3,10 @@ import { Geist, Geist_Mono, Roboto_Mono } from "next/font/google";
 import "./globals.css";
 
 import { AppSidebar } from "@/components/ui/app-sidebar";
-import { Breadcrumb } from "@/components/ui/breadcrumb";
 import { Separator } from "@/components/ui/separator";
 import { SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar";
 import { ReduxProvider } from "@/lib/reduxProvider";
+import LoginDialog from "./_components/loginDialog";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -50,11 +50,12 @@ export default function RootLayout({
               <header className="flex h-16  items-center gap-2 border-b px-4 ">
                 <SidebarTrigger className="-ml-1" />
                 <Separator orientation="vertical" className="mr-2 h-4" />
-                <Breadcrumb>
-                  <div className="p-1">
-                    <p>SpaceOMID</p>
+
+                <div className="p-1 flex-1 flex justify-end ">
+                  <div>
+                    <LoginDialog />
                   </div>
-                </Breadcrumb>
+                </div>
               </header>
 
               {/* Page Content */}

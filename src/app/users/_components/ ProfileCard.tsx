@@ -1,16 +1,6 @@
 import { Button } from "@/components/ui/button";
 import DeleteDialog from "@/components/ui/deletdialog";
-import {
-  Dialog,
-  DialogClose,
-  DialogContent,
-  DialogDescription,
-  DialogFooter,
-  DialogHeader,
-  DialogTitle,
-  DialogTrigger,
-} from "@/components/ui/dialog";
-import { IconEdit, IconTrashX } from "@tabler/icons-react";
+import { IconEdit } from "@tabler/icons-react";
 import Image from "next/image";
 import Link from "next/link";
 
@@ -38,7 +28,7 @@ export default function ProfileCard({
   return (
     <div className="bg-gray-700 p-2 rounded-lg md:flex-row gap-4 items-center cursor-pointer">
       <Link href={`/users/${id}`} passHref>
-        <div>
+        <div className="flex  justify-between gap-4">
           <Image
             src={src}
             width={width}
@@ -47,9 +37,9 @@ export default function ProfileCard({
             className="rounded-lg w-full md:w-auto"
           />
           <div className="flex flex-col gap-4 w-full p-1">
-            <div className="flex justify-between items-center text-white">
-              <div>{name}</div>
-              <div>{lastName}</div>
+            <div className="flex  gap-2  text-white">
+              <p>{name}</p>
+              <p>{lastName}</p>
             </div>
             <div>
               <p className="text-gray-300">{email}</p>
@@ -57,7 +47,7 @@ export default function ProfileCard({
           </div>
         </div>
       </Link>
-      <div className="flex items-center justify-between gap-2 w-full">
+      <div className="flex items-center justify-between mt-4 gap-2 w-full">
         <div className="flex gap-2 items-center">
           <Link href={`/users/${id}/edit`}>
             <Button type="button" variant="primary">
@@ -66,7 +56,7 @@ export default function ProfileCard({
             </Button>
           </Link>
         </div>
-        <DeleteDialog />
+        <DeleteDialog id={id} />
       </div>
     </div>
   );

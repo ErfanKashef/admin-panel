@@ -1,6 +1,5 @@
 "use client";
-import { useEffect, useState } from "react";
-import axios from "axios";
+import { useState } from "react";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import {
@@ -9,60 +8,42 @@ import {
   PaginationItem,
   PaginationPrevious,
   PaginationLink,
-  PaginationEllipsis,
   PaginationNext,
 } from "@/components/ui/pagination";
 import ProfileCard from "./_components/ ProfileCard";
-import { coreApi } from "@/services/core-api";
 import Loading from "@/components/ui/looding";
 import { useGetUsersQuery } from "@/lib/services/usersApi";
-
-// تعریف نوع کاربران
-interface User {
-  id: number;
-  email: string;
-  first_name: string;
-  last_name: string;
-  avatar: string;
-}
+import { IconReload } from "@tabler/icons-react";
 
 const UserListPage = () => {
+  const [page, setPage] = useState<number>(1);
+  const [isReloading, setIsReloading] = useState<boolean>(false);
+
   const {
-    data: users2,
+    data: usersResponse,
     isLoading,
     isError,
-    error: error2,
-  } = useGetUsersQuery();
-  const [users, setUsers] = useState<User[]>([]);
-  const [loading, setLoading] = useState<boolean>(true);
-  const [error, setError] = useState<string | null>(null);
-  const [page, setPage] = useState<number>(1);
-  const [totalPages, setTotalPages] = useState<number>(1);
+    refetch,
+  } = useGetUsersQuery({ page });
 
-  const fetchUsers = async (page: number) => {
-    setLoading(true);
-    setError(null);
+  const handleReload = async () => {
+    setIsReloading(true);
     try {
-      const response = await coreApi.get<{
-        data: User[];
-        total_pages: number;
-      }>(`users?page=${page}`);
-      setUsers(response.data.data);
-      setTotalPages(response.data.total_pages);
-    } catch (err: any) {
-      setError(err.message);
+      await refetch();
     } finally {
-      setLoading(false);
+      // Add a small delay to show the animation
+      setTimeout(() => setIsReloading(false), 500);
     }
   };
 
-  useEffect(() => {
-    fetchUsers(page);
-  }, [page]);
+  if (isLoading) return <Loading />;
 
-  if (loading) return <Loading />;
+  if (isError) {
+    return <p>Error: Failed to load users</p>;
+  }
 
-  if (error) return <p>Error: {error}</p>;
+  const users = usersResponse?.data || [];
+  const totalPages = usersResponse?.total_pages || 1;
 
   return (
     <div className="">
@@ -71,7 +52,20 @@ const UserListPage = () => {
           <div>
             <p className="text-2xl font-bold">User List</p>
           </div>
-          <div>
+          <div className="flex gap-2">
+            <Button
+              variant="outline"
+              onClick={handleReload}
+              disabled={isReloading}
+            >
+              <IconReload
+                size={16}
+                className={`mr-2 transition-transform duration-300 ${
+                  isReloading ? "animate-spin" : ""
+                }`}
+              />
+              {isReloading ? "Reloading..." : "Reload"}
+            </Button>
             <Link href="/users/create">
               <Button variant={"primary"}>Create User</Button>
             </Link>
@@ -87,8 +81,8 @@ const UserListPage = () => {
             name={user.first_name}
             lastName={user.last_name}
             src={user.avatar}
-            width={150}
-            height={200}
+            width={128}
+            height={128}
             alt={`${user.first_name} ${user.last_name}`}
           />
         ))}

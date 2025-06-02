@@ -5,12 +5,19 @@ import {
   DialogTitle,
   DialogDescription,
   DialogClose,
-} from "@radix-ui/react-dialog";
+} from "@/components/ui/dialog";
 import { IconTrashX } from "@tabler/icons-react";
 import { Button } from "./button";
 import { DialogHeader, DialogFooter } from "./dialog";
+import { useDeleteUserMutation } from "@/lib/services/usersApi";
 
-const DeleteDialog = () => {
+const DeleteDialog = ({ id }: { id: number }) => {
+  const [deleteUser, { isLoading }] = useDeleteUserMutation();
+
+  const handleDelete = async () => {
+    await deleteUser(id);
+  };
+
   return (
     <Dialog>
       <DialogTrigger asChild>
@@ -26,14 +33,19 @@ const DeleteDialog = () => {
             Are you sure you want to delete this user?
           </DialogDescription>
         </DialogHeader>
-        <DialogFooter className="flex gap-3 sm:justify-start">
+        <DialogFooter className="flex gap-3  ">
           <DialogClose asChild>
-            <Button type="button" variant="secondary">
+            <Button disabled={isLoading} type="button" variant="secondary">
               Cancel
             </Button>
           </DialogClose>
           <DialogClose asChild>
-            <Button type="button" variant="destructive">
+            <Button
+              type="button"
+              variant="destructive"
+              onClick={handleDelete}
+              disabled={isLoading}
+            >
               yes
             </Button>
           </DialogClose>

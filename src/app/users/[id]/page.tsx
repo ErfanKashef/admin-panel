@@ -1,49 +1,20 @@
 "use client";
-import { useEffect, useState } from "react";
-import { useParams } from "next/navigation";
-import axios from "axios";
-import UserCard from "./_components/Usercard";
-import { coreApi } from "@/services/core-api";
 import Loading from "@/components/ui/looding";
-
-interface User {
-  id: number;
-  email: string;
-  first_name: string;
-  last_name: string;
-  avatar: string;
-}
+import { useParams } from "next/navigation";
+import UserCard from "./_components/Usercard";
+import { useGetUserQuery } from "@/lib/services/usersApi";
 
 const UserPage = () => {
   const params = useParams();
-  const userId = params.id;
+  const userId = Number(params.id);
 
-  const [user, setUser] = useState<User | null>(null);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
+  const { data: userResponse, isLoading, isError } = useGetUserQuery(userId);
 
-  useEffect(() => {
-    if (!userId) return;
+  if (isLoading) return <Loading />;
+  if (isError) return <p>Error: Failed to load user</p>;
+  if (!userResponse?.data) return <p>User not found</p>;
 
-    const fetchUser = async () => {
-      setLoading(true);
-      setError(null);
-      try {
-        const response = await coreApi.get<{ data: User }>(`users/${userId}`);
-        setUser(response.data.data);
-      } catch (err: any) {
-        setError(err.message || "Error fetching user");
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    fetchUser();
-  }, [userId]);
-
-  if (loading) return <Loading />;
-  if (error) return <p>Error: {error}</p>;
-  if (!user) return <p>User not found</p>;
+  const user = userResponse.data;
 
   return (
     <div className="rounded-lg bg-gray-800 p-4">

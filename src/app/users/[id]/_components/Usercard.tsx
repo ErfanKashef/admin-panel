@@ -1,17 +1,7 @@
 "use client";
 import { Button } from "@/components/ui/button";
 import DeleteDialog from "@/components/ui/deletdialog";
-import {
-  Dialog,
-  DialogClose,
-  DialogContent,
-  DialogDescription,
-  DialogFooter,
-  DialogHeader,
-  DialogTitle,
-  DialogTrigger,
-} from "@/components/ui/dialog";
-import { IconEdit, IconTrashX } from "@tabler/icons-react";
+import { IconEdit } from "@tabler/icons-react";
 import Image from "next/image";
 import Link from "next/link";
 
@@ -56,7 +46,7 @@ const UserCard: React.FC<UserCardProps> = ({
               </Button>
             </Link>
           </div>
-          <DeleteDialog />
+          <DeleteDialog id={id} />
         </div>
       </div>
     </div>
