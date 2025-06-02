@@ -6,6 +6,7 @@ import { AppSidebar } from "@/components/ui/app-sidebar";
 import { Breadcrumb } from "@/components/ui/breadcrumb";
 import { Separator } from "@/components/ui/separator";
 import { SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar";
+import { ReduxProvider } from "@/lib/reduxProvider";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -37,28 +38,30 @@ export default function RootLayout({
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased dark `}
       >
-        {/* Sidebar */}
-        <SidebarProvider className="flex min-h-full">
+        <ReduxProvider>
           {/* Sidebar */}
-          <AppSidebar />
+          <SidebarProvider className="flex min-h-full">
+            {/* Sidebar */}
+            <AppSidebar />
 
-          {/* Main Content Area */}
-          <div className=" flex-col gap-4 flex-1">
-            {/* Header */}
-            <header className="flex h-16  items-center gap-2 border-b px-4 ">
-              <SidebarTrigger className="-ml-1" />
-              <Separator orientation="vertical" className="mr-2 h-4" />
-              <Breadcrumb>
-                <div className="p-1">
-                  <p>SpaceOMID</p>
-                </div>
-              </Breadcrumb>
-            </header>
+            {/* Main Content Area */}
+            <div className=" flex-col gap-4 flex-1">
+              {/* Header */}
+              <header className="flex h-16  items-center gap-2 border-b px-4 ">
+                <SidebarTrigger className="-ml-1" />
+                <Separator orientation="vertical" className="mr-2 h-4" />
+                <Breadcrumb>
+                  <div className="p-1">
+                    <p>SpaceOMID</p>
+                  </div>
+                </Breadcrumb>
+              </header>
 
-            {/* Page Content */}
-            <main className=" overflow-y-auto p-4">{children}</main>
-          </div>
-        </SidebarProvider>
+              {/* Page Content */}
+              <main className=" overflow-y-auto p-4">{children}</main>
+            </div>
+          </SidebarProvider>
+        </ReduxProvider>
       </body>
     </html>
   );

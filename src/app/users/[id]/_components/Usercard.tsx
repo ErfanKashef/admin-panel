@@ -1,5 +1,6 @@
 "use client";
 import { Button } from "@/components/ui/button";
+import DeleteDialog from "@/components/ui/deletdialog";
 import {
   Dialog,
   DialogClose,
@@ -55,34 +56,7 @@ const UserCard: React.FC<UserCardProps> = ({
               </Button>
             </Link>
           </div>
-          <Dialog>
-            <DialogTrigger asChild>
-              <Button variant="destructive">
-                <IconTrashX size={35} color="white" />
-                Delete
-              </Button>
-            </DialogTrigger>
-            <DialogContent className="sm:max-w-md">
-              <DialogHeader>
-                <DialogTitle>Delete user</DialogTitle>
-                <DialogDescription>
-                  Are you sure you want to delete this user?
-                </DialogDescription>
-              </DialogHeader>
-              <DialogFooter className="flex gap-3 sm:justify-start">
-                <DialogClose asChild>
-                  <Button type="button" variant="secondary">
-                    Cancel
-                  </Button>
-                </DialogClose>
-                <DialogClose asChild>
-                  <Button type="button" variant="destructive">
-                    yes
-                  </Button>
-                </DialogClose>
-              </DialogFooter>
-            </DialogContent>
-          </Dialog>
+          <DeleteDialog />
         </div>
       </div>
     </div>
